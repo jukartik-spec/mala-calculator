@@ -1,0 +1,3104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mala Calculator</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fcd34d 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    /* Header */
+    .header {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .header h1 {
+      font-size: 24px;
+      color: #92400e;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+    
+    .btn-primary {
+      background: #f59e0b;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #d97706;
+    }
+    
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #374151;
+    }
+    
+    .btn-secondary:hover {
+      background: #d1d5db;
+    }
+    
+    .btn-success {
+      background: #10b981;
+      color: white;
+    }
+    
+    .btn-success:hover {
+      background: #059669;
+    }
+    
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+    
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 5px;
+      background: white;
+      padding: 8px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      flex-wrap: wrap;
+    }
+    
+    .tab {
+      padding: 12px 24px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: #6b7280;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    
+    .tab:hover {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    
+    .tab.active {
+      background: #f59e0b;
+      color: white;
+    }
+    
+    /* Main Content */
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    @media (max-width: 1024px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 5px;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+    }
+    
+    .form-select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      background: white;
+      cursor: pointer;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+    
+    /* Items List */
+    .items-list {
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+    }
+    
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 15px;
+      border-bottom: 1px solid #e5e7eb;
+      transition: background 0.2s;
+    }
+    
+    .item-row:last-child {
+      border-bottom: none;
+    }
+    
+    .item-row:hover {
+      background: #fef3c7;
+    }
+    
+    .item-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .item-color {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid rgba(0,0,0,0.1);
+    }
+    
+    .item-name {
+      font-weight: 500;
+      color: #1f2937;
+    }
+    
+    .item-specs {
+      font-size: 12px;
+      color: #6b7280;
+    }
+    
+    .item-actions {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    
+    .icon-btn-edit {
+      background: #dbeafe;
+      color: #2563eb;
+    }
+    
+    .icon-btn-edit:hover {
+      background: #bfdbfe;
+    }
+    
+    .icon-btn-delete {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+    
+    .icon-btn-delete:hover {
+      background: #fecaca;
+    }
+    
+    /* Section Tabs */
+    .section-tabs {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 10px;
+    }
+    
+    .section-tab {
+      padding: 8px 16px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      color: #6b7280;
+      border-radius: 6px 6px 0 0;
+      transition: all 0.2s;
+    }
+    
+    .section-tab:hover {
+      background: #f3f4f6;
+    }
+    
+    .section-tab.active {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    
+    /* Pattern Bucket */
+    .bucket {
+      border: 2px dashed #d1d5db;
+      border-radius: 12px;
+      min-height: 200px;
+      padding: 15px;
+    }
+    
+    .bucket-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 150px;
+      color: #9ca3af;
+    }
+    
+    .bucket-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      background: #f9fafb;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      border: 1px solid #e5e7eb;
+    }
+    
+    .bucket-item.bead {
+      background: #fef3c7;
+      border-color: #fcd34d;
+    }
+    
+    .bucket-item.mani {
+      background: #fef9c3;
+      border-color: #fde047;
+    }
+    
+    .bucket-item.cap {
+      background: #ffedd5;
+      border-color: #fdba74;
+    }
+    
+    .bucket-item-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .bucket-item-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .qty-control {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .qty-btn {
+      width: 28px;
+      height: 28px;
+      border: 1px solid #d1d5db;
+      background: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .qty-btn:hover {
+      background: #f3f4f6;
+    }
+    
+    .qty-input {
+      width: 50px;
+      text-align: center;
+      padding: 5px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    
+    .order-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    
+    .order-btn {
+      width: 24px;
+      height: 18px;
+      border: 1px solid #d1d5db;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .order-btn:hover {
+      background: #f3f4f6;
+    }
+    
+    /* Gap Settings */
+    .settings-panel {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 15px;
+      margin-top: 15px;
+    }
+    
+    .settings-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      padding: 5px;
+    }
+    
+    .settings-header h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+    }
+    
+    .settings-content {
+      margin-top: 15px;
+    }
+    
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .toggle {
+      width: 44px;
+      height: 24px;
+      background: #d1d5db;
+      border-radius: 12px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .toggle.active {
+      background: #f59e0b;
+    }
+    
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: left 0.2s;
+    }
+    
+    .toggle.active::after {
+      left: 22px;
+    }
+    
+    .toggle-label {
+      font-size: 13px;
+      color: #374151;
+    }
+    
+    /* Radio Options */
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .radio-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .radio-option:hover {
+      border-color: #fcd34d;
+    }
+    
+    .radio-option.selected {
+      border-color: #f59e0b;
+      background: #fffbeb;
+    }
+    
+    .radio-option input[type="radio"] {
+      margin-top: 3px;
+    }
+    
+    .radio-content {
+      flex: 1;
+    }
+    
+    .radio-title {
+      font-weight: 500;
+      color: #1f2937;
+      margin-bottom: 5px;
+    }
+    
+    .radio-desc {
+      font-size: 12px;
+      color: #6b7280;
+    }
+    
+    /* Preview */
+    .preview-container {
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 15px;
+      background: #fafafa;
+    }
+    
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .preview-tabs {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .preview-tab {
+      padding: 6px 12px;
+      border: 1px solid #d1d5db;
+      background: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    
+    .preview-tab.active {
+      background: #f59e0b;
+      color: white;
+      border-color: #f59e0b;
+    }
+    
+    .preview-area {
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .linear-preview {
+      width: 100%;
+      overflow-x: auto;
+      padding: 20px 0;
+    }
+    
+    .linear-strand {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      min-width: max-content;
+      position: relative;
+      padding: 10px;
+    }
+    
+    .thread-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 2px;
+      background: #9ca3af;
+      z-index: 0;
+    }
+    
+    .preview-item {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: bold;
+    }
+    
+    .preview-cap-left {
+      border-radius: 50% 0 0 50%;
+    }
+    
+    .preview-cap-right {
+      border-radius: 0 50% 50% 0;
+    }
+    
+    .preview-gap {
+      width: 8px;
+      height: 2px;
+      background: #d1d5db;
+      z-index: 1;
+    }
+    
+    /* Scale */
+    .scale-container {
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid #e5e7eb;
+    }
+    
+    .scale-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .scale-ruler {
+      width: 76px;
+      height: 12px;
+      background: #1f2937;
+      border-radius: 2px;
+      position: relative;
+    }
+    
+    .scale-tick {
+      position: absolute;
+      width: 2px;
+      height: 8px;
+      background: white;
+      top: -4px;
+    }
+    
+    .scale-tick.start {
+      left: 0;
+    }
+    
+    .scale-tick.end {
+      right: 0;
+    }
+    
+    .scale-label {
+      font-size: 12px;
+      color: #6b7280;
+      background: #f3f4f6;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    
+    /* Circular Preview */
+    .circular-preview {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .circular-svg {
+      max-width: 100%;
+    }
+    
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    .stat-card {
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1f2937;
+    }
+    
+    .stat-label {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+    
+    .stat-card.gold {
+      background: #fef3c7;
+    }
+    
+    .stat-card.gold .stat-value {
+      color: #92400e;
+    }
+    
+    /* Legend */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #e5e7eb;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+    
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+    
+    /* Calculator Results */
+    .results-section {
+      margin-top: 20px;
+    }
+    
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .result-row:last-child {
+      border-bottom: none;
+    }
+    
+    .result-label {
+      color: #6b7280;
+      font-size: 14px;
+    }
+    
+    .result-value {
+      font-weight: 600;
+      color: #1f2937;
+    }
+    
+    .result-row.highlight {
+      background: #fef3c7;
+      margin: 0 -20px;
+      padding: 15px 20px;
+      border-radius: 8px;
+    }
+    
+    .result-row.highlight .result-value {
+      font-size: 18px;
+      color: #92400e;
+    }
+    
+    /* Breakdown Table */
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      font-size: 13px;
+    }
+    
+    .breakdown-table th,
+    .breakdown-table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .breakdown-table th {
+      background: #f9fafb;
+      font-weight: 600;
+      color: #374151;
+    }
+    
+    .breakdown-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-overlay.show {
+      display: flex;
+    }
+    
+    .modal {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1f2937;
+    }
+    
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: #f3f4f6;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-close:hover {
+      background: #e5e7eb;
+    }
+    
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+    }
+    
+    /* Notifications */
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: 8px;
+      color: white;
+      font-weight: 500;
+      z-index: 2000;
+      animation: slideIn 0.3s ease;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    .notification.success {
+      background: #10b981;
+    }
+    
+    .notification.error {
+      background: #ef4444;
+    }
+    
+    .notification.info {
+      background: #3b82f6;
+    }
+    
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #9ca3af;
+    }
+    
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+    
+    .empty-state-text {
+      font-size: 14px;
+    }
+    
+    /* Pattern Concept Preview */
+    .pattern-concept {
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 15px;
+    }
+    
+    .pattern-concept-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      margin-bottom: 10px;
+    }
+    
+    .pattern-sequence {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    
+    .pattern-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .pattern-item.bead {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    
+    .pattern-item.mani {
+      background: #fef9c3;
+      color: #854d0e;
+    }
+    
+    .pattern-arrow {
+      color: #9ca3af;
+    }
+    
+    /* Kadi Settings */
+    .kadi-settings {
+      background: #fef3c7;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+    }
+    
+    .kadi-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    /* Summary Badge */
+    .summary-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      background: #e5e7eb;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #374151;
+    }
+    
+    .summary-badge.gold {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    
+    /* Saved Patterns */
+    .pattern-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 10px;
+      transition: all 0.2s;
+    }
+    
+    .pattern-card:hover {
+      border-color: #fcd34d;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .pattern-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    
+    .pattern-card-title {
+      font-weight: 600;
+      color: #1f2937;
+    }
+    
+    .pattern-card-date {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    
+    .pattern-card-details {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 10px;
+    }
+    
+    .pattern-card-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    /* Hidden file input */
+    .hidden-input {
+      display: none;
+    }
+    
+    /* Info Box */
+    .info-box {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+    }
+    
+    .info-box-title {
+      font-weight: 600;
+      color: #1e40af;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+    
+    .info-box-text {
+      font-size: 12px;
+      color: #3b82f6;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .form-row, .form-row-3 {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .bucket-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      
+      .bucket-item-controls {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>📿 Mala Calculator</h1>
+      <div class="header-actions">
+        <button class="btn btn-secondary" onclick="importDatabase()">
+          📥 Import
+        </button>
+        <button class="btn btn-primary" onclick="exportDatabase()">
+          📤 Export
+        </button>
+      </div>
+    </header>
+    
+    <!-- Navigation Tabs -->
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('items')">📦 Items</button>
+      <button class="tab" onclick="showTab('pattern')">🔧 Pattern Builder</button>
+      <button class="tab" onclick="showTab('calculator')">📊 Calculator</button>
+      <button class="tab" onclick="showTab('saved')">💾 Saved Patterns</button>
+    </div>
+    
+    <!-- Tab Contents -->
+    <div id="tab-items" class="tab-content">
+      <div class="main-content">
+        <!-- Items Management -->
+        <div class="card">
+          <h2 class="card-title">📦 Manage Items</h2>
+          
+          <div class="section-tabs">
+            <button class="section-tab active" onclick="showItemSection('beads')">🔵 Beads</button>
+            <button class="section-tab" onclick="showItemSection('mani')">✦ Mani</button>
+            <button class="section-tab" onclick="showItemSection('caps')">◐ Caps</button>
+          </div>
+          
+          <!-- Beads Section -->
+          <div id="section-beads" class="item-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+              <span class="summary-badge" id="beads-count">0 items</span>
+              <button class="btn btn-success btn-sm" onclick="openAddModal('bead')">+ Add Bead</button>
+            </div>
+            <div class="items-list" id="beads-list">
+              <div class="empty-state">
+                <div class="empty-state-icon">📿</div>
+                <div class="empty-state-text">No beads added yet</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Mani Section -->
+          <div id="section-mani" class="item-section" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+              <span class="summary-badge gold" id="mani-count">0 items</span>
+              <button class="btn btn-success btn-sm" onclick="openAddModal('mani')">+ Add Mani</button>
+            </div>
+            <div class="items-list" id="mani-list">
+              <div class="empty-state">
+                <div class="empty-state-icon">✦</div>
+                <div class="empty-state-text">No mani added yet</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Caps Section -->
+          <div id="section-caps" class="item-section" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+              <span class="summary-badge gold" id="caps-count">0 items</span>
+              <button class="btn btn-success btn-sm" onclick="openAddModal('cap')">+ Add Cap</button>
+            </div>
+            <div class="items-list" id="caps-list">
+              <div class="empty-state">
+                <div class="empty-state-icon">◐</div>
+                <div class="empty-state-text">No caps added yet</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Gold Rate Settings -->
+        <div class="card">
+          <h2 class="card-title">⚙️ Settings</h2>
+          
+          <div class="form-group">
+            <label class="form-label">Gold Rate (per gram)</label>
+            <input type="number" class="form-input" id="gold-rate" value="7500" onchange="saveSettings()">
+          </div>
+          
+          <div class="info-box">
+            <div class="info-box-title">💡 Database Info</div>
+            <div class="info-box-text">
+              Your data is automatically saved in browser storage. 
+              Use Export to backup your data to a file, and Import to restore.
+            </div>
+          </div>
+          
+          <div style="margin-top: 15px;">
+            <div class="result-row">
+              <span class="result-label">Total Beads</span>
+              <span class="result-value" id="stats-beads">0</span>
+            </div>
+            <div class="result-row">
+              <span class="result-label">Total Mani</span>
+              <span class="result-value" id="stats-mani">0</span>
+            </div>
+            <div class="result-row">
+              <span class="result-label">Total Caps</span>
+              <span class="result-value" id="stats-caps">0</span>
+            </div>
+            <div class="result-row">
+              <span class="result-label">Saved Patterns</span>
+              <span class="result-value" id="stats-patterns">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Pattern Builder Tab -->
+    <div id="tab-pattern" class="tab-content" style="display: none;">
+      <div class="main-content">
+        <!-- Add Items -->
+        <div class="card">
+          <h2 class="card-title">🔧 Build Pattern</h2>
+          
+          <!-- Add Beads -->
+          <div class="settings-panel" style="background: #fef3c7;">
+            <h3 style="font-size: 14px; font-weight: 600; color: #92400e; margin-bottom: 10px;">🔵 Add Beads</h3>
+            <div class="form-row">
+              <div class="form-group" style="margin-bottom: 0;">
+                <select class="form-select" id="select-bead">
+                  <option value="">Select bead...</option>
+                </select>
+              </div>
+              <div style="display: flex; gap: 10px;">
+                <input type="number" class="form-input" id="bead-qty" value="54" min="1" style="width: 80px;">
+                <button class="btn btn-primary" onclick="addToBucket('bead')">Add</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Add Mani -->
+          <div class="settings-panel" style="background: #fef9c3; margin-top: 10px;">
+            <h3 style="font-size: 14px; font-weight: 600; color: #854d0e; margin-bottom: 10px;">✦ Add Mani</h3>
+            <div class="form-row">
+              <div class="form-group" style="margin-bottom: 0;">
+                <select class="form-select" id="select-mani">
+                  <option value="">Select mani...</option>
+                </select>
+              </div>
+              <div style="display: flex; gap: 10px;">
+                <input type="number" class="form-input" id="mani-qty" value="53" min="1" style="width: 80px;">
+                <button class="btn btn-primary" onclick="addToBucket('mani')">Add</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Caps Toggle -->
+          <div class="settings-panel" style="background: #ffedd5; margin-top: 10px;">
+            <div class="toggle-container">
+              <div class="toggle" id="toggle-caps" onclick="toggleCaps()"></div>
+              <span class="toggle-label">◐ Include Caps on Beads</span>
+            </div>
+            <div id="caps-options" style="display: none; margin-top: 10px;">
+              <select class="form-select" id="select-cap">
+                <option value="">Select cap...</option>
+              </select>
+              <p style="font-size: 11px; color: #6b7280; margin-top: 5px;">Each bead gets 2 caps (left + right)</p>
+            </div>
+          </div>
+          
+          <!-- Kadi Toggle -->
+          <div class="settings-panel" style="background: #fef3c7; margin-top: 10px;">
+            <div class="toggle-container">
+              <div class="toggle" id="toggle-kadi" onclick="toggleKadi()"></div>
+              <span class="toggle-label">◉ Include Kadi (Joint)</span>
+            </div>
+            <div id="kadi-options" style="display: none;">
+              <div class="kadi-row">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label">Kadi Size (mm)</label>
+                  <input type="number" class="form-input" id="kadi-size" value="5" step="0.1" onchange="updateCalculation()">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label">Weight (grams)</label>
+                  <input type="number" class="form-input" id="kadi-weight" value="0.3" step="0.01" onchange="updateCalculation()">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Quick Presets -->
+          <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="btn btn-secondary btn-sm" onclick="applyPreset(108)">108 Beads</button>
+            <button class="btn btn-secondary btn-sm" onclick="applyPreset(54)">54 + 53</button>
+            <button class="btn btn-secondary btn-sm" onclick="applyPreset(27)">27 + 26</button>
+            <button class="btn btn-danger btn-sm" onclick="clearBucket()">Clear All</button>
+          </div>
+        </div>
+        
+        <!-- Pattern Bucket -->
+        <div class="card">
+          <h2 class="card-title">🪣 Pattern Bucket</h2>
+          
+          <div class="bucket" id="pattern-bucket">
+            <div class="bucket-empty">
+              <div style="font-size: 32px; margin-bottom: 10px;">🪣</div>
+              <div>Add items from the left panel</div>
+            </div>
+          </div>
+          
+          <!-- Pattern Summary -->
+          <div id="pattern-summary" style="display: none; margin-top: 15px;">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <span class="summary-badge" id="summary-beads">0 beads</span>
+              <span class="summary-badge gold" id="summary-mani">0 mani</span>
+              <span class="summary-badge gold" id="summary-caps">0 caps</span>
+            </div>
+          </div>
+          
+          <!-- Pattern Concept Preview -->
+          <div class="pattern-concept" id="pattern-concept" style="display: none;">
+            <div class="pattern-concept-title">Pattern Sequence:</div>
+            <div class="pattern-sequence" id="pattern-sequence"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Gap Settings -->
+      <div class="card" style="margin-top: 20px;">
+        <div class="settings-header" onclick="toggleGapSettings()">
+          <h2 class="card-title" style="margin-bottom: 0;">⚙️ Gap & Measurement Settings</h2>
+          <span id="gap-toggle-icon">▼</span>
+        </div>
+        
+        <div id="gap-settings" class="settings-content" style="display: none;">
+          <div class="form-row-3">
+            <div class="form-group">
+              <label class="form-label">Thread Thickness (mm)</label>
+              <input type="number" class="form-input" id="thread-thickness" value="0.5" step="0.1" onchange="updateCalculation()">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Gap Between Items (mm)</label>
+              <input type="number" class="form-input" id="uniform-gap" value="3" step="0.1" onchange="updateCalculation()">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Cap-Bead Gap (mm)</label>
+              <input type="number" class="form-input" id="cap-bead-gap" value="0" step="0.1" onchange="updateCalculation()">
+            </div>
+          </div>
+          
+          <!-- Set Length Method -->
+          <div style="margin-top: 20px;">
+            <label class="form-label" style="margin-bottom: 10px;">Set Length Calculation Method:</label>
+            
+            <div class="radio-group">
+              <div class="radio-option selected" onclick="selectMethod('components')" id="method-components">
+                <input type="radio" name="method" checked>
+                <div class="radio-content">
+                  <div class="radio-title">Calculate from Components</div>
+                  <div class="radio-desc">Set = Cap + Bead + Cap (with overlap)</div>
+                  <div style="margin-top: 10px;">
+                    <label class="form-label">Cap Overlap / Fit Depth (mm)</label>
+                    <input type="number" class="form-input" id="cap-overlap" value="1.3" step="0.1" onchange="updateCalculation()">
+                  </div>
+                </div>
+              </div>
+              
+              <div class="radio-option" onclick="selectMethod('measured')" id="method-measured">
+                <input type="radio" name="method">
+                <div class="radio-content">
+                  <div class="radio-title">Use Measured Set Length</div>
+                  <div class="radio-desc">Enter actual measured length of one ( o ) set</div>
+                  <div style="margin-top: 10px;">
+                    <label class="form-label">Measured Set Length (mm)</label>
+                    <input type="number" class="form-input" id="measured-set-length" value="6.25" step="0.01" disabled onchange="updateCalculation()">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Thread Weight -->
+          <div class="form-group" style="margin-top: 15px;">
+            <label class="form-label">Thread/Wire Weight (grams)</label>
+            <input type="number" class="form-input" id="thread-weight" value="0" step="0.01" onchange="updateCalculation()">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Calculator Tab -->
+    <div id="tab-calculator" class="tab-content" style="display: none;">
+      <div class="main-content">
+        <!-- Mala Preview -->
+        <div class="card">
+          <h2 class="card-title">👁️ Mala Preview</h2>
+          
+          <div class="preview-container">
+            <div class="preview-header">
+              <span style="font-size: 13px; color: #6b7280;">Preview</span>
+              <div class="preview-tabs">
+                <button class="preview-tab active" onclick="setPreviewMode('linear')">Linear</button>
+                <button class="preview-tab" onclick="setPreviewMode('circular')">Circular</button>
+              </div>
+            </div>
+            
+            <div class="preview-area" id="preview-area">
+              <div class="empty-state">
+                <div class="empty-state-icon">📿</div>
+                <div class="empty-state-text">Add items to pattern to see preview</div>
+              </div>
+            </div>
+            
+            <!-- Scale -->
+            <div class="scale-container" id="scale-container" style="display: none;">
+              <div class="scale-bar">
+                <div class="scale-ruler">
+                  <div class="scale-tick start"></div>
+                  <div class="scale-tick end"></div>
+                </div>
+                <span class="scale-label">📏 1 inch = 25.4mm</span>
+              </div>
+            </div>
+            
+            <!-- Legend -->
+            <div class="legend" id="preview-legend" style="display: none;"></div>
+          </div>
+          
+          <!-- Stats Cards -->
+          <div class="stats-grid" id="stats-grid" style="display: none;">
+            <div class="stat-card">
+              <div class="stat-value" id="stat-sets">0</div>
+              <div class="stat-label">Sets ( o )</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="stat-mani">0</div>
+              <div class="stat-label">Mani ✦</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="stat-pieces">0</div>
+              <div class="stat-label">Total Pieces</div>
+            </div>
+            <div class="stat-card gold">
+              <div class="stat-value" id="stat-length">0"</div>
+              <div class="stat-label">Length</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Calculation Results -->
+        <div class="card">
+          <h2 class="card-title">📊 Calculation Results</h2>
+          
+          <div id="calc-empty" class="empty-state">
+            <div class="empty-state-icon">📊</div>
+            <div class="empty-state-text">Build a pattern to see calculations</div>
+          </div>
+          
+          <div id="calc-results" style="display: none;">
+            <div class="result-row highlight">
+              <span class="result-label">Total Length</span>
+              <span class="result-value" id="result-length">0 mm / 0"</span>
+            </div>
+            
+            <div class="result-row">
+              <span class="result-label">Total Pieces</span>
+              <span class="result-value" id="result-pieces">0</span>
+            </div>
+            
+            <div class="result-row">
+              <span class="result-label">Total Weight</span>
+              <span class="result-value" id="result-weight">0 g</span>
+            </div>
+            
+            <div class="result-row">
+              <span class="result-label">Gold Weight</span>
+              <span class="result-value" id="result-gold-weight">0 g</span>
+            </div>
+            
+            <div class="result-row">
+              <span class="result-label">Gold Cost</span>
+              <span class="result-value" id="result-gold-cost">₹0</span>
+            </div>
+            
+            <div class="result-row">
+              <span class="result-label">Sets per Inch</span>
+              <span class="result-value" id="result-sets-inch">0</span>
+            </div>
+            
+            <!-- Calculation Breakdown -->
+            <div style="margin-top: 20px;">
+              <h3 style="font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 10px;">📐 Calculation Breakdown</h3>
+              <table class="breakdown-table">
+                <thead>
+                  <tr>
+                    <th>Component</th>
+                    <th>Count</th>
+                    <th>Size/Length</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody id="breakdown-body">
+                </tbody>
+              </table>
+            </div>
+            
+            <!-- Save Pattern Button -->
+            <div style="margin-top: 20px;">
+              <button class="btn btn-success" onclick="openSavePatternModal()" style="width: 100%;">
+                💾 Save This Pattern
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Saved Patterns Tab -->
+    <div id="tab-saved" class="tab-content" style="display: none;">
+      <div class="card">
+        <h2 class="card-title">💾 Saved Patterns</h2>
+        
+        <div id="saved-patterns-list">
+          <div class="empty-state">
+            <div class="empty-state-icon">💾</div>
+            <div class="empty-state-text">No saved patterns yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Add/Edit Item Modal -->
+  <div class="modal-overlay" id="item-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Add Item</h3>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      
+      <div id="modal-form-content">
+        <!-- Form fields will be inserted here dynamically -->
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" id="modal-save-btn" onclick="saveItem()">Save</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Save Pattern Modal -->
+  <div class="modal-overlay" id="save-pattern-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Save Pattern</h3>
+        <button class="modal-close" onclick="closeSavePatternModal()">&times;</button>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Pattern Name</label>
+        <input type="text" class="form-input" id="pattern-name" placeholder="e.g., 54 Tulsi with Gold">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Notes (optional)</label>
+        <textarea class="form-input" id="pattern-notes" rows="3" placeholder="Any additional notes..."></textarea>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeSavePatternModal()">Cancel</button>
+        <button class="btn btn-success" onclick="savePattern()">💾 Save Pattern</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Hidden file input for import -->
+  <input type="file" class="hidden-input" id="import-file" accept=".json" onchange="handleImport(event)">
+  
+  <script>
+    // ============================================
+    // DATABASE & STATE
+    // ============================================
+    
+    let db = {
+      beads: [],
+      mani: [],
+      caps: [],
+      savedPatterns: [],
+      settings: {
+        goldRate: 7500
+      }
+    };
+    
+    let pattern = {
+      bucket: [],
+      includeCaps: false,
+      selectedCapId: null,
+      includeKadi: false,
+      kadiSize: 5,
+      kadiWeight: 0.3,
+      gapSettings: {
+        threadThickness: 0.5,
+        uniformGap: 3,
+        capBeadGap: 0,
+        capOverlap: 1.3,
+        setLengthMethod: 'components',
+        measuredSetLength: 6.25,
+        threadWeight: 0
+      }
+    };
+    
+    let previewMode = 'linear';
+    let editingItem = null;
+    let editingItemType = null;
+    
+    // ============================================
+    // INITIALIZATION
+    // ============================================
+    
+    function init() {
+      loadFromStorage();
+      renderAllLists();
+      populateDropdowns();
+      updateStats();
+      updateCalculation();
+    }
+    
+    function loadFromStorage() {
+      const saved = localStorage.getItem('mala-calculator-db');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          db = { ...db, ...parsed };
+          
+          // Load pattern if exists
+          const savedPattern = localStorage.getItem('mala-calculator-pattern');
+          if (savedPattern) {
+            pattern = { ...pattern, ...JSON.parse(savedPattern) };
+            
+            // Restore UI state
+            if (pattern.includeCaps) {
+              document.getElementById('toggle-caps').classList.add('active');
+              document.getElementById('caps-options').style.display = 'block';
+            }
+            if (pattern.includeKadi) {
+              document.getElementById('toggle-kadi').classList.add('active');
+              document.getElementById('kadi-options').style.display = 'block';
+            }
+            
+            // Restore gap settings
+            document.getElementById('thread-thickness').value = pattern.gapSettings.threadThickness;
+            document.getElementById('uniform-gap').value = pattern.gapSettings.uniformGap;
+            document.getElementById('cap-bead-gap').value = pattern.gapSettings.capBeadGap;
+            document.getElementById('cap-overlap').value = pattern.gapSettings.capOverlap;
+            document.getElementById('measured-set-length').value = pattern.gapSettings.measuredSetLength;
+            document.getElementById('thread-weight').value = pattern.gapSettings.threadWeight;
+            document.getElementById('kadi-size').value = pattern.kadiSize;
+            document.getElementById('kadi-weight').value = pattern.kadiWeight;
+            
+            if (pattern.gapSettings.setLengthMethod === 'measured') {
+              selectMethod('measured');
+            }
+          }
+          
+          // Load settings
+          document.getElementById('gold-rate').value = db.settings.goldRate;
+          
+        } catch (e) {
+          console.error('Error loading from storage:', e);
+        }
+      }
+    }
+    
+    function saveToStorage() {
+      localStorage.setItem('mala-calculator-db', JSON.stringify(db));
+      localStorage.setItem('mala-calculator-pattern', JSON.stringify(pattern));
+    }
+    
+    // ============================================
+    // TAB NAVIGATION
+    // ============================================
+    
+    function showTab(tabName) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(el => {
+        el.style.display = 'none';
+      });
+      
+      // Remove active class from all tab buttons
+      document.querySelectorAll('.tab').forEach(el => {
+        el.classList.remove('active');
+      });
+      
+      // Show selected tab
+      document.getElementById('tab-' + tabName).style.display = 'block';
+      
+      // Add active class to clicked tab
+      event.target.classList.add('active');
+      
+      // Update preview when switching to calculator
+      if (tabName === 'calculator') {
+        updateCalculation();
+      }
+    }
+    
+    function showItemSection(section) {
+      // Hide all sections
+      document.querySelectorAll('.item-section').forEach(el => {
+        el.style.display = 'none';
+      });
+      
+      // Remove active class from all section tabs
+      document.querySelectorAll('.section-tab').forEach(el => {
+        el.classList.remove('active');
+      });
+      
+      // Show selected section
+      document.getElementById('section-' + section).style.display = 'block';
+      
+      // Add active class
+      event.target.classList.add('active');
+    }
+    
+    // ============================================
+    // ITEMS CRUD
+    // ============================================
+    
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+    
+    function openAddModal(type) {
+      editingItem = null;
+      editingItemType = type;
+      
+      const modal = document.getElementById('item-modal');
+      const title = document.getElementById('modal-title');
+      const form = document.getElementById('modal-form-content');
+      
+      if (type === 'bead') {
+        title.textContent = 'Add Bead';
+        form.innerHTML = `
+          <div class="form-group">
+            <label class="form-label">Name *</label>
+            <input type="text" class="form-input" id="item-name" placeholder="e.g., Tulsi 4mm">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Diameter (mm) *</label>
+              <input type="number" class="form-input" id="item-diameter" step="0.1" value="6">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Hole Diameter (mm)</label>
+              <input type="number" class="form-input" id="item-hole" step="0.1" value="1.5">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Weight (grams)</label>
+              <input type="number" class="form-input" id="item-weight" step="0.01" value="0.5">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Color</label>
+              <input type="color" class="form-input" id="item-color" value="#8B4513" style="height: 42px;">
+            </div>
+          </div>
+        `;
+      } else if (type === 'mani') {
+        title.textContent = 'Add Mani (Gold Ball)';
+        form.innerHTML = `
+          <div class="form-group">
+            <label class="form-label">Name *</label>
+            <input type="text" class="form-input" id="item-name" placeholder="e.g., Gold Ball 4mm">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Ball Gauge (mm) *</label>
+              <input type="number" class="form-input" id="item-ball-gauge" step="0.1" value="4">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Height (mm) *</label>
+              <input type="number" class="form-input" id="item-height" step="0.1" value="4">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Weight (grams)</label>
+              <input type="number" class="form-input" id="item-weight" step="0.01" value="0.5">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Color</label>
+              <input type="color" class="form-input" id="item-color" value="#FFD700" style="height: 42px;">
+            </div>
+          </div>
+        `;
+      } else if (type === 'cap') {
+        title.textContent = 'Add Cap';
+        form.innerHTML = `
+          <div class="form-group">
+            <label class="form-label">Name *</label>
+            <input type="text" class="form-input" id="item-name" placeholder="e.g., Gold Cap 3.6mm">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Outer Diameter (mm) *</label>
+              <input type="number" class="form-input" id="item-outer-dia" step="0.1" value="3.6">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Inner Diameter (mm)</label>
+              <input type="number" class="form-input" id="item-inner-dia" step="0.1" value="3">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Height (mm) *</label>
+              <input type="number" class="form-input" id="item-height" step="0.1" value="2">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Weight (grams)</label>
+              <input type="number" class="form-input" id="item-weight" step="0.01" value="0.12">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Color</label>
+            <input type="color" class="form-input" id="item-color" value="#DAA520" style="height: 42px;">
+          </div>
+        `;
+      }
+      
+      modal.classList.add('show');
+    }
+    
+    function openEditModal(type, id) {
+      const list = type === 'bead' ? db.beads : type === 'mani' ? db.mani : db.caps;
+      const item = list.find(i => i.id === id);
+      
+      if (!item) return;
+      
+      editingItem = item;
+      editingItemType = type;
+      
+      openAddModal(type);
+      document.getElementById('modal-title').textContent = 'Edit ' + (type === 'bead' ? 'Bead' : type === 'mani' ? 'Mani' : 'Cap');
+      
+      // Fill form with existing values
+      document.getElementById('item-name').value = item.name;
+      
+      if (type === 'bead') {
+        document.getElementById('item-diameter').value = item.diameter;
+        document.getElementById('item-hole').value = item.holeDiameter || '';
+        document.getElementById('item-weight').value = item.weight || '';
+        document.getElementById('item-color').value = item.color || '#8B4513';
+      } else if (type === 'mani') {
+        document.getElementById('item-ball-gauge').value = item.ballGauge;
+        document.getElementById('item-height').value = item.height;
+        document.getElementById('item-weight').value = item.weight || '';
+        document.getElementById('item-color').value = item.color || '#FFD700';
+      } else if (type === 'cap') {
+        document.getElementById('item-outer-dia').value = item.outerDiameter;
+        document.getElementById('item-inner-dia').value = item.innerDiameter || '';
+        document.getElementById('item-height').value = item.height;
+        document.getElementById('item-weight').value = item.weight || '';
+        document.getElementById('item-color').value = item.color || '#DAA520';
+      }
+    }
+    
+    function closeModal() {
+      document.getElementById('item-modal').classList.remove('show');
+      editingItem = null;
+      editingItemType = null;
+    }
+    
+    function saveItem() {
+      const type = editingItemType;
+      const name = document.getElementById('item-name').value.trim();
+      
+      if (!name) {
+        showNotification('Please enter a name', 'error');
+        return;
+      }
+      
+      let item;
+      
+      if (type === 'bead') {
+        item = {
+          id: editingItem ? editingItem.id : generateId(),
+          name: name,
+          diameter: parseFloat(document.getElementById('item-diameter').value) || 0,
+          holeDiameter: parseFloat(document.getElementById('item-hole').value) || 0,
+          weight: parseFloat(document.getElementById('item-weight').value) || 0,
+          color: document.getElementById('item-color').value
+        };
+        
+        if (editingItem) {
+          const idx = db.beads.findIndex(i => i.id === editingItem.id);
+          if (idx !== -1) db.beads[idx] = item;
+        } else {
+          db.beads.push(item);
+        }
+      } else if (type === 'mani') {
+        item = {
+          id: editingItem ? editingItem.id : generateId(),
+          name: name,
+          ballGauge: parseFloat(document.getElementById('item-ball-gauge').value) || 0,
+          height: parseFloat(document.getElementById('item-height').value) || 0,
+          weight: parseFloat(document.getElementById('item-weight').value) || 0,
+          color: document.getElementById('item-color').value
+        };
+        
+        if (editingItem) {
+          const idx = db.mani.findIndex(i => i.id === editingItem.id);
+          if (idx !== -1) db.mani[idx] = item;
+        } else {
+          db.mani.push(item);
+        }
+      } else if (type === 'cap') {
+        item = {
+          id: editingItem ? editingItem.id : generateId(),
+          name: name,
+          outerDiameter: parseFloat(document.getElementById('item-outer-dia').value) || 0,
+          innerDiameter: parseFloat(document.getElementById('item-inner-dia').value) || 0,
+          height: parseFloat(document.getElementById('item-height').value) || 0,
+          weight: parseFloat(document.getElementById('item-weight').value) || 0,
+          color: document.getElementById('item-color').value
+        };
+        
+        if (editingItem) {
+          const idx = db.caps.findIndex(i => i.id === editingItem.id);
+          if (idx !== -1) db.caps[idx] = item;
+        } else {
+          db.caps.push(item);
+        }
+      }
+      
+      saveToStorage();
+      renderAllLists();
+      populateDropdowns();
+      updateStats();
+      closeModal();
+      showNotification((editingItem ? 'Updated' : 'Added') + ' successfully', 'success');
+    }
+    
+    function deleteItem(type, id) {
+      if (!confirm('Are you sure you want to delete this item?')) return;
+      
+      if (type === 'bead') {
+        db.beads = db.beads.filter(i => i.id !== id);
+        pattern.bucket = pattern.bucket.filter(b => !(b.type === 'bead' && b.itemId === id));
+      } else if (type === 'mani') {
+        db.mani = db.mani.filter(i => i.id !== id);
+        pattern.bucket = pattern.bucket.filter(b => !(b.type === 'mani' && b.itemId === id));
+      } else if (type === 'cap') {
+        db.caps = db.caps.filter(i => i.id !== id);
+        if (pattern.selectedCapId === id) {
+          pattern.selectedCapId = null;
+        }
+      }
+      
+      saveToStorage();
+      renderAllLists();
+      populateDropdowns();
+      updateStats();
+      renderBucket();
+      updateCalculation();
+      showNotification('Deleted successfully', 'success');
+    }
+    
+    // ============================================
+    // RENDER LISTS
+    // ============================================
+    
+    function renderAllLists() {
+      renderBeadsList();
+      renderManiList();
+      renderCapsList();
+      renderSavedPatterns();
+    }
+    
+    function renderBeadsList() {
+      const container = document.getElementById('beads-list');
+      document.getElementById('beads-count').textContent = db.beads.length + ' items';
+      
+      if (db.beads.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📿</div>
+            <div class="empty-state-text">No beads added yet</div>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = db.beads.map(item => `
+        <div class="item-row">
+          <div class="item-info">
+            <div class="item-color" style="background: ${item.color}"></div>
+            <div>
+              <div class="item-name">${item.name}</div>
+              <div class="item-specs">⌀${item.diameter}mm · ${item.weight}g</div>
+            </div>
+          </div>
+          <div class="item-actions">
+            <button class="icon-btn icon-btn-edit" onclick="openEditModal('bead', '${item.id}')">✏️</button>
+            <button class="icon-btn icon-btn-delete" onclick="deleteItem('bead', '${item.id}')">🗑️</button>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function renderManiList() {
+      const container = document.getElementById('mani-list');
+      document.getElementById('mani-count').textContent = db.mani.length + ' items';
+      
+      if (db.mani.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">✦</div>
+            <div class="empty-state-text">No mani added yet</div>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = db.mani.map(item => `
+        <div class="item-row">
+          <div class="item-info">
+            <div class="item-color" style="background: ${item.color}"></div>
+            <div>
+              <div class="item-name">${item.name}</div>
+              <div class="item-specs">⌀${item.ballGauge}mm · H:${item.height}mm · ${item.weight}g</div>
+            </div>
+          </div>
+          <div class="item-actions">
+            <button class="icon-btn icon-btn-edit" onclick="openEditModal('mani', '${item.id}')">✏️</button>
+            <button class="icon-btn icon-btn-delete" onclick="deleteItem('mani', '${item.id}')">🗑️</button>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function renderCapsList() {
+      const container = document.getElementById('caps-list');
+      document.getElementById('caps-count').textContent = db.caps.length + ' items';
+      
+      if (db.caps.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">◐</div>
+            <div class="empty-state-text">No caps added yet</div>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = db.caps.map(item => `
+        <div class="item-row">
+          <div class="item-info">
+            <div class="item-color" style="background: ${item.color}"></div>
+            <div>
+              <div class="item-name">${item.name}</div>
+              <div class="item-specs">⌀${item.outerDiameter}mm · H:${item.height}mm · ${item.weight}g</div>
+            </div>
+          </div>
+          <div class="item-actions">
+            <button class="icon-btn icon-btn-edit" onclick="openEditModal('cap', '${item.id}')">✏️</button>
+            <button class="icon-btn icon-btn-delete" onclick="deleteItem('cap', '${item.id}')">🗑️</button>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function renderSavedPatterns() {
+      const container = document.getElementById('saved-patterns-list');
+      
+      if (db.savedPatterns.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">💾</div>
+            <div class="empty-state-text">No saved patterns yet</div>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = db.savedPatterns.map(p => `
+        <div class="pattern-card">
+          <div class="pattern-card-header">
+            <div class="pattern-card-title">📿 ${p.name}</div>
+            <div class="pattern-card-date">${p.date || ''}</div>
+          </div>
+          <div class="pattern-card-details">${p.summary || ''}</div>
+          <div class="pattern-card-actions">
+            <button class="btn btn-primary btn-sm" onclick="loadPattern('${p.id}')">Load</button>
+            <button class="btn btn-danger btn-sm" onclick="deletePattern('${p.id}')">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    // ============================================
+    // POPULATE DROPDOWNS
+    // ============================================
+    
+    function populateDropdowns() {
+      // Beads dropdown
+      const beadSelect = document.getElementById('select-bead');
+      beadSelect.innerHTML = '<option value="">Select bead...</option>' +
+        db.beads.map(b => `<option value="${b.id}">${b.name} (⌀${b.diameter}mm)</option>`).join('');
+      
+      // Mani dropdown
+      const maniSelect = document.getElementById('select-mani');
+      maniSelect.innerHTML = '<option value="">Select mani...</option>' +
+        db.mani.map(m => `<option value="${m.id}">${m.name} (${m.height}mm)</option>`).join('');
+      
+      // Caps dropdown
+      const capSelect = document.getElementById('select-cap');
+      capSelect.innerHTML = '<option value="">Select cap...</option>' +
+        db.caps.map(c => `<option value="${c.id}">${c.name} (H:${c.height}mm)</option>`).join('');
+      
+      // Restore selections
+      if (pattern.selectedCapId) {
+        capSelect.value = pattern.selectedCapId;
+      }
+    }
+    
+    // ============================================
+    // PATTERN BUCKET
+    // ============================================
+    
+    function addToBucket(type) {
+      let itemId, qty;
+      
+      if (type === 'bead') {
+        itemId = document.getElementById('select-bead').value;
+        qty = parseInt(document.getElementById('bead-qty').value) || 1;
+      } else if (type === 'mani') {
+        itemId = document.getElementById('select-mani').value;
+        qty = parseInt(document.getElementById('mani-qty').value) || 1;
+      }
+      
+      if (!itemId) {
+        showNotification('Please select an item', 'error');
+        return;
+      }
+      
+      // Check if item already in bucket
+      const existing = pattern.bucket.find(b => b.type === type && b.itemId === itemId);
+      
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        pattern.bucket.push({ type, itemId, qty });
+      }
+      
+      saveToStorage();
+      renderBucket();
+      updateCalculation();
+    }
+    
+    function updateBucketQty(index, newQty) {
+      if (newQty < 1) newQty = 1;
+      pattern.bucket[index].qty = newQty;
+      saveToStorage();
+      renderBucket();
+      updateCalculation();
+    }
+    
+    function removeBucketItem(index) {
+      pattern.bucket.splice(index, 1);
+      saveToStorage();
+      renderBucket();
+      updateCalculation();
+    }
+    
+    function moveBucketItem(index, direction) {
+      const newIndex = index + direction;
+      if (newIndex < 0 || newIndex >= pattern.bucket.length) return;
+      
+      const temp = pattern.bucket[index];
+      pattern.bucket[index] = pattern.bucket[newIndex];
+      pattern.bucket[newIndex] = temp;
+      
+      saveToStorage();
+      renderBucket();
+      updateCalculation();
+    }
+    
+    function clearBucket() {
+      pattern.bucket = [];
+      saveToStorage();
+      renderBucket();
+      updateCalculation();
+    }
+    
+    function renderBucket() {
+      const container = document.getElementById('pattern-bucket');
+      const summaryEl = document.getElementById('pattern-summary');
+      const conceptEl = document.getElementById('pattern-concept');
+      
+      if (pattern.bucket.length === 0) {
+        container.innerHTML = `
+          <div class="bucket-empty">
+            <div style="font-size: 32px; margin-bottom: 10px;">🪣</div>
+            <div>Add items from the left panel</div>
+          </div>
+        `;
+        summaryEl.style.display = 'none';
+        conceptEl.style.display = 'none';
+        return;
+      }
+      
+      let beadCount = 0, maniCount = 0, capCount = 0;
+      
+      let html = '';
+      
+      // Show caps if enabled
+      if (pattern.includeCaps && pattern.selectedCapId) {
+        const cap = db.caps.find(c => c.id === pattern.selectedCapId);
+        const totalBeads = pattern.bucket.filter(b => b.type === 'bead').reduce((sum, b) => sum + b.qty, 0);
+        capCount = totalBeads * 2;
+        
+        if (cap) {
+          html += `
+            <div class="bucket-item cap">
+              <div class="bucket-item-info">
+                <span style="font-size: 18px;">◐</span>
+                <div>
+                  <strong>${cap.name}</strong>
+                  <div style="font-size: 11px; color: #6b7280;">Auto: ${totalBeads} × 2 = ${capCount} caps</div>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+      }
+      
+      // Show bucket items
+      pattern.bucket.forEach((item, index) => {
+        let itemData, displayInfo;
+        
+        if (item.type === 'bead') {
+          itemData = db.beads.find(b => b.id === item.itemId);
+          beadCount += item.qty;
+          displayInfo = itemData ? `${itemData.name}` : 'Unknown bead';
+        } else if (item.type === 'mani') {
+          itemData = db.mani.find(m => m.id === item.itemId);
+          maniCount += item.qty;
+          displayInfo = itemData ? `${itemData.name}` : 'Unknown mani';
+        }
+        
+        if (!itemData) return;
+        
+        html += `
+          <div class="bucket-item ${item.type}">
+            <div class="bucket-item-info">
+              <div class="order-btns">
+                <button class="order-btn" onclick="moveBucketItem(${index}, -1)" ${index === 0 ? 'disabled' : ''}>▲</button>
+                <button class="order-btn" onclick="moveBucketItem(${index}, 1)" ${index === pattern.bucket.length - 1 ? 'disabled' : ''}>▼</button>
+              </div>
+              <span style="font-size: 18px;">${item.type === 'bead' ? (pattern.includeCaps ? '( o )' : '●') : '✦'}</span>
+              <div>
+                <strong>${displayInfo}</strong>
+                <div style="font-size: 11px; color: #6b7280;">${item.type === 'bead' ? '⌀' + itemData.diameter + 'mm' : 'H:' + itemData.height + 'mm'}</div>
+              </div>
+            </div>
+            <div class="bucket-item-controls">
+              <div class="qty-control">
+                <button class="qty-btn" onclick="updateBucketQty(${index}, ${item.qty - 1})">−</button>
+                <input type="number" class="qty-input" value="${item.qty}" min="1" onchange="updateBucketQty(${index}, parseInt(this.value))">
+                <button class="qty-btn" onclick="updateBucketQty(${index}, ${item.qty + 1})">+</button>
+              </div>
+              <button class="icon-btn icon-btn-delete" onclick="removeBucketItem(${index})">×</button>
+            </div>
+          </div>
+        `;
+      });
+      
+      container.innerHTML = html;
+      
+      // Update summary
+      summaryEl.style.display = 'flex';
+      document.getElementById('summary-beads').textContent = beadCount + ' beads';
+      document.getElementById('summary-mani').textContent = maniCount + ' mani';
+      document.getElementById('summary-caps').textContent = capCount + ' caps';
+      
+      // Update pattern concept
+      conceptEl.style.display = 'block';
+      renderPatternConcept(beadCount, maniCount);
+    }
+    
+    function renderPatternConcept(beadCount, maniCount) {
+      const container = document.getElementById('pattern-sequence');
+      let html = '';
+      
+      if (beadCount > 0) {
+        html += `<div class="pattern-item bead">${pattern.includeCaps ? '( o )' : '●'} ×${beadCount}</div>`;
+      }
+      
+      if (maniCount > 0) {
+        if (beadCount > 0) html += `<span class="pattern-arrow">→</span>`;
+        html += `<div class="pattern-item mani">✦ ×${maniCount}</div>`;
+      }
+      
+      if (beadCount > 0 && maniCount > 0) {
+        html += `<span class="pattern-arrow">→ ...</span>`;
+      }
+      
+      container.innerHTML = html || '<span style="color: #9ca3af;">Empty pattern</span>';
+    }
+    
+    function applyPreset(count) {
+      pattern.bucket = [];
+      
+      const firstBead = db.beads[0];
+      const firstMani = db.mani[0];
+      
+      if (!firstBead) {
+        showNotification('Please add some beads first', 'error');
+        return;
+      }
+      
+      if (count === 108) {
+        pattern.bucket.push({ type: 'bead', itemId: firstBead.id, qty: 108 });
+      } else if (count === 54) {
+        pattern.bucket.push({ type: 'bead', itemId: firstBead.id, qty: 54 });
+        if (firstMani) {
+          pattern.bucket.push({ type: 'mani', itemId: firstMani.id, qty: 53 });
+        }
+      } else if (count === 27) {
+        pattern.bucket.push({ type: 'bead', itemId: firstBead.id, qty: 27 });
+        if (firstMani) {
+          pattern.bucket.push({ type: 'mani', itemId: firstMani.id, qty: 26 });
+        }
+      }
+      
+      saveToStorage();
+      renderBucket();
+      updateCalculation();
+    }
+    
+    // ============================================
+    // TOGGLES
+    // ============================================
+    
+    function toggleCaps() {
+      pattern.includeCaps = !pattern.includeCaps;
+      document.getElementById('toggle-caps').classList.toggle('active');
+      document.getElementById('caps-options').style.display = pattern.includeCaps ? 'block' : 'none';
+      
+      if (pattern.includeCaps) {
+        pattern.selectedCapId = document.getElementById('select-cap').value || (db.caps[0]?.id || null);
+        document.getElementById('select-cap').value = pattern.selectedCapId;
+      }
+      
+      saveToStorage();
+      renderBucket();
+      updateCalculation();
+    }
+    
+    function toggleKadi() {
+      pattern.includeKadi = !pattern.includeKadi;
+      document.getElementById('toggle-kadi').classList.toggle('active');
+      document.getElementById('kadi-options').style.display = pattern.includeKadi ? 'block' : 'none';
+      
+      saveToStorage();
+      updateCalculation();
+    }
+    
+    function toggleGapSettings() {
+      const content = document.getElementById('gap-settings');
+      const icon = document.getElementById('gap-toggle-icon');
+      
+      if (content.style.display === 'none') {
+        content.style.display = 'block';
+        icon.textContent = '▲';
+      } else {
+        content.style.display = 'none';
+        icon.textContent = '▼';
+      }
+    }
+    
+    function selectMethod(method) {
+      pattern.gapSettings.setLengthMethod = method;
+      
+      document.querySelectorAll('.radio-option').forEach(el => el.classList.remove('selected'));
+      document.getElementById('method-' + method).classList.add('selected');
+      
+      // Enable/disable inputs
+      document.getElementById('cap-overlap').disabled = method !== 'components';
+      document.getElementById('measured-set-length').disabled = method !== 'measured';
+      
+      saveToStorage();
+      updateCalculation();
+    }
+    
+    // ============================================
+    // SETTINGS
+    // ============================================
+    
+    function saveSettings() {
+      db.settings.goldRate = parseFloat(document.getElementById('gold-rate').value) || 7500;
+      
+      pattern.gapSettings.threadThickness = parseFloat(document.getElementById('thread-thickness').value) || 0.5;
+      pattern.gapSettings.uniformGap = parseFloat(document.getElementById('uniform-gap').value) || 3;
+      pattern.gapSettings.capBeadGap = parseFloat(document.getElementById('cap-bead-gap').value) || 0;
+      pattern.gapSettings.capOverlap = parseFloat(document.getElementById('cap-overlap').value) || 0;
+      pattern.gapSettings.measuredSetLength = parseFloat(document.getElementById('measured-set-length').value) || 0;
+      pattern.gapSettings.threadWeight = parseFloat(document.getElementById('thread-weight').value) || 0;
+      
+      pattern.kadiSize = parseFloat(document.getElementById('kadi-size').value) || 5;
+      pattern.kadiWeight = parseFloat(document.getElementById('kadi-weight').value) || 0.3;
+      
+      saveToStorage();
+    }
+    
+    function updateStats() {
+      document.getElementById('stats-beads').textContent = db.beads.length;
+      document.getElementById('stats-mani').textContent = db.mani.length;
+      document.getElementById('stats-caps').textContent = db.caps.length;
+      document.getElementById('stats-patterns').textContent = db.savedPatterns.length;
+    }
+    
+    // ============================================
+    // CALCULATION
+    // ============================================
+    
+    function updateCalculation() {
+      saveSettings();
+      
+      // Update cap selection
+      pattern.selectedCapId = document.getElementById('select-cap').value || null;
+      
+      // Count items
+      let beadCount = 0, maniCount = 0, capCount = 0;
+      let beadDiameter = 0, maniHeight = 0, capHeight = 0;
+      let beadWeight = 0, maniWeight = 0, capWeight = 0;
+      
+      pattern.bucket.forEach(item => {
+        if (item.type === 'bead') {
+          const bead = db.beads.find(b => b.id === item.itemId);
+          if (bead) {
+            beadCount += item.qty;
+            beadDiameter = bead.diameter;
+            beadWeight += item.qty * (bead.weight || 0);
+          }
+        } else if (item.type === 'mani') {
+          const mani = db.mani.find(m => m.id === item.itemId);
+          if (mani) {
+            maniCount += item.qty;
+            maniHeight = mani.height;
+            maniWeight += item.qty * (mani.weight || 0);
+          }
+        }
+      });
+      
+      if (pattern.includeCaps && pattern.selectedCapId) {
+        const cap = db.caps.find(c => c.id === pattern.selectedCapId);
+        if (cap) {
+          capCount = beadCount * 2;
+          capHeight = cap.height;
+          capWeight = capCount * (cap.weight || 0);
+        }
+      }
+      
+      // Calculate set length
+      let setLengthMM = 0;
+      const gs = pattern.gapSettings;
+      
+      if (gs.setLengthMethod === 'measured' && gs.measuredSetLength > 0) {
+        setLengthMM = gs.measuredSetLength;
+      } else {
+        // Calculate from components
+        const effectiveCapHeight = Math.max(0, capHeight - gs.capOverlap);
+        if (pattern.includeCaps && capHeight > 0) {
+          setLengthMM = effectiveCapHeight + gs.capBeadGap + beadDiameter + gs.capBeadGap + effectiveCapHeight;
+        } else {
+          setLengthMM = beadDiameter;
+        }
+      }
+      
+      // Calculate total length
+      const setCount = beadCount;
+      const setsLength = setCount * setLengthMM;
+      const maniLength = maniCount * maniHeight;
+      const totalItems = setCount + maniCount;
+      const totalGaps = Math.max(0, totalItems - 1);
+      const gapsLength = totalGaps * gs.uniformGap;
+      
+      let totalLengthMM = setsLength + maniLength + gapsLength;
+      
+      // Add kadi
+      if (pattern.includeKadi) {
+        totalLengthMM += pattern.kadiSize;
+      }
+      
+      const totalLengthInches = totalLengthMM / 25.4;
+      
+      // Calculate weights
+      let totalWeight = beadWeight + maniWeight + capWeight + gs.threadWeight;
+      let goldWeight = maniWeight + capWeight;
+      
+      if (pattern.includeKadi) {
+        goldWeight += pattern.kadiWeight;
+        totalWeight += pattern.kadiWeight;
+      }
+      
+      const goldCost = goldWeight * db.settings.goldRate;
+      
+      // Calculate sets per inch
+      const setWithGap = setLengthMM + gs.uniformGap;
+      const setsPerInch = setWithGap > 0 ? 25.4 / setWithGap : 0;
+      
+      // Update UI
+      const hasItems = beadCount > 0 || maniCount > 0;
+      
+      document.getElementById('calc-empty').style.display = hasItems ? 'none' : 'block';
+      document.getElementById('calc-results').style.display = hasItems ? 'block' : 'none';
+      document.getElementById('stats-grid').style.display = hasItems ? 'grid' : 'none';
+      document.getElementById('scale-container').style.display = hasItems ? 'block' : 'none';
+      document.getElementById('preview-legend').style.display = hasItems ? 'flex' : 'none';
+      
+      if (!hasItems) {
+        document.getElementById('preview-area').innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📿</div>
+            <div class="empty-state-text">Add items to pattern to see preview</div>
+          </div>
+        `;
+        return;
+      }
+      
+      // Update result values
+      document.getElementById('result-length').textContent = totalLengthMM.toFixed(2) + ' mm / ' + totalLengthInches.toFixed(2) + '"';
+      document.getElementById('result-pieces').textContent = beadCount + capCount + maniCount + (pattern.includeKadi ? 1 : 0);
+      document.getElementById('result-weight').textContent = totalWeight.toFixed(2) + ' g';
+      document.getElementById('result-gold-weight').textContent = goldWeight.toFixed(2) + ' g';
+      document.getElementById('result-gold-cost').textContent = '₹' + goldCost.toFixed(0);
+      document.getElementById('result-sets-inch').textContent = setsPerInch.toFixed(2) + ' (≈' + Math.floor(setsPerInch) + ' to ' + Math.ceil(setsPerInch) + ')';
+      
+      // Update stats
+      document.getElementById('stat-sets').textContent = setCount;
+      document.getElementById('stat-mani').textContent = maniCount;
+      document.getElementById('stat-pieces').textContent = beadCount + capCount + maniCount;
+      document.getElementById('stat-length').textContent = totalLengthInches.toFixed(1) + '"';
+      
+      // Update breakdown
+      let breakdownHTML = '';
+      
+      if (setCount > 0) {
+        breakdownHTML += `
+          <tr>
+            <td>Bead Sets ( o )</td>
+            <td>${setCount}</td>
+            <td>${setLengthMM.toFixed(2)} mm</td>
+            <td>${setsLength.toFixed(2)} mm</td>
+          </tr>
+        `;
+      }
+      
+      if (maniCount > 0) {
+        breakdownHTML += `
+          <tr>
+            <td>Mani ✦</td>
+            <td>${maniCount}</td>
+            <td>${maniHeight.toFixed(2)} mm</td>
+            <td>${maniLength.toFixed(2)} mm</td>
+          </tr>
+        `;
+      }
+      
+      if (totalGaps > 0) {
+        breakdownHTML += `
+          <tr>
+            <td>Gaps</td>
+            <td>${totalGaps}</td>
+            <td>${gs.uniformGap.toFixed(2)} mm</td>
+            <td>${gapsLength.toFixed(2)} mm</td>
+          </tr>
+        `;
+      }
+      
+      if (pattern.includeKadi) {
+        breakdownHTML += `
+          <tr>
+            <td>Kadi ◉</td>
+            <td>1</td>
+            <td>${pattern.kadiSize.toFixed(2)} mm</td>
+            <td>${pattern.kadiSize.toFixed(2)} mm</td>
+          </tr>
+        `;
+      }
+      
+      breakdownHTML += `
+        <tr style="font-weight: bold; background: #fef3c7;">
+          <td colspan="3">Total Length</td>
+          <td>${totalLengthMM.toFixed(2)} mm = ${totalLengthInches.toFixed(2)}"</td>
+        </tr>
+      `;
+      
+      document.getElementById('breakdown-body').innerHTML = breakdownHTML;
+      
+      // Update legend
+      let legendHTML = '';
+      
+      pattern.bucket.forEach(item => {
+        if (item.type === 'bead') {
+          const bead = db.beads.find(b => b.id === item.itemId);
+          if (bead) {
+            legendHTML += `
+              <div class="legend-item">
+                <div class="legend-color" style="background: ${bead.color}"></div>
+                <span>${bead.name}: ${item.qty}</span>
+              </div>
+            `;
+          }
+        } else if (item.type === 'mani') {
+          const mani = db.mani.find(m => m.id === item.itemId);
+          if (mani) {
+            legendHTML += `
+              <div class="legend-item">
+                <div class="legend-color" style="background: ${mani.color}; border: 2px solid #B8860B;"></div>
+                <span>${mani.name}: ${item.qty}</span>
+              </div>
+            `;
+          }
+        }
+      });
+      
+      if (pattern.includeCaps && pattern.selectedCapId) {
+        const cap = db.caps.find(c => c.id === pattern.selectedCapId);
+        if (cap) {
+          legendHTML += `
+            <div class="legend-item">
+              <div class="legend-color" style="background: ${cap.color}"></div>
+              <span>${cap.name}: ${capCount}</span>
+            </div>
+          `;
+        }
+      }
+      
+      if (pattern.includeKadi) {
+        legendHTML += `
+          <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(135deg, #FFD700, #B8860B);"></div>
+            <span>Kadi: 1</span>
+          </div>
+        `;
+      }
+      
+      document.getElementById('preview-legend').innerHTML = legendHTML;
+      
+      // Render preview
+      renderPreview(beadCount, maniCount, capCount, setLengthMM);
+    }
+    
+    // ============================================
+    // PREVIEW RENDERING
+    // ============================================
+    
+    function setPreviewMode(mode) {
+      previewMode = mode;
+      document.querySelectorAll('.preview-tab').forEach(el => el.classList.remove('active'));
+      event.target.classList.add('active');
+      updateCalculation();
+    }
+    
+    function renderPreview(beadCount, maniCount, capCount, setLengthMM) {
+      const container = document.getElementById('preview-area');
+      
+      if (previewMode === 'linear') {
+        renderLinearPreview(container, beadCount, maniCount);
+      } else {
+        renderCircularPreview(container, beadCount, maniCount);
+      }
+    }
+    
+    function renderLinearPreview(container, beadCount, maniCount) {
+      // Build sequence alternating beads and mani
+      const items = [];
+      const maxItems = Math.max(beadCount, maniCount);
+      
+      // Get first bead and mani for colors
+      let beadItem = null, maniItem = null, capItem = null;
+      
+      pattern.bucket.forEach(b => {
+        if (b.type === 'bead' && !beadItem) {
+          beadItem = db.beads.find(x => x.id === b.itemId);
+        }
+        if (b.type === 'mani' && !maniItem) {
+          maniItem = db.mani.find(x => x.id === b.itemId);
+        }
+      });
+      
+      if (pattern.includeCaps && pattern.selectedCapId) {
+        capItem = db.caps.find(c => c.id === pattern.selectedCapId);
+      }
+      
+      let beadsUsed = 0, maniUsed = 0;
+      
+      for (let i = 0; i < maxItems; i++) {
+        if (beadsUsed < beadCount) {
+          items.push({ type: 'bead', data: beadItem, cap: capItem });
+          beadsUsed++;
+        }
+        if (maniUsed < maniCount) {
+          items.push({ type: 'mani', data: maniItem });
+          maniUsed++;
+        }
+      }
+      
+      // Limit display
+      const maxDisplay = 20;
+      const displayItems = items.slice(0, maxDisplay);
+      const hasMore = items.length > maxDisplay;
+      
+      let html = '<div class="linear-preview"><div class="linear-strand"><div class="thread-line"></div>';
+      
+      // Add Kadi if enabled
+      if (pattern.includeKadi) {
+        html += `
+          <div class="preview-item" style="width: 20px; height: 20px; background: linear-gradient(135deg, #FFD700, #B8860B); border: 2px solid #8B6914; font-size: 12px;">◉</div>
+          <div class="preview-gap"></div>
+        `;
+      }
+      
+      displayItems.forEach((item, idx) => {
+        if (item.type === 'bead') {
+          const beadSize = Math.min(30, Math.max(16, (item.data?.diameter || 6) * 2.5));
+          const beadColor = item.data?.color || '#8B4513';
+          
+          if (item.cap) {
+            // Left cap
+            html += `<div class="preview-item preview-cap-left" style="width: 8px; height: ${beadSize}px; background: ${item.cap.color};">(</div>`;
+            // Bead
+            html += `<div class="preview-item" style="width: ${beadSize}px; height: ${beadSize}px; background: ${beadColor};">o</div>`;
+            // Right cap
+            html += `<div class="preview-item preview-cap-right" style="width: 8px; height: ${beadSize}px; background: ${item.cap.color};">)</div>`;
+          } else {
+            html += `<div class="preview-item" style="width: ${beadSize}px; height: ${beadSize}px; background: ${beadColor};">●</div>`;
+          }
+        } else if (item.type === 'mani') {
+          const maniSize = Math.min(24, Math.max(14, (item.data?.ballGauge || 4) * 2.5));
+          const maniColor = item.data?.color || '#FFD700';
+          html += `<div class="preview-item" style="width: ${maniSize}px; height: ${maniSize}px; background: ${maniColor}; border: 2px solid #B8860B;">✦</div>`;
+        }
+        
+        if (idx < displayItems.length - 1) {
+          html += '<div class="preview-gap"></div>';
+        }
+      });
+      
+      if (hasMore) {
+        html += `<div style="margin-left: 10px; color: #9ca3af; font-size: 12px;">+${items.length - maxDisplay} more...</div>`;
+      }
+      
+      html += '</div></div>';
+      container.innerHTML = html;
+    }
+    
+    function renderCircularPreview(container, beadCount, maniCount) {
+      const size = 280;
+      const centerX = size / 2;
+      const centerY = size / 2;
+      const radius = 100;
+      
+      // Build items array
+      const items = [];
+      let beadItem = null, maniItem = null, capItem = null;
+      
+      pattern.bucket.forEach(b => {
+        if (b.type === 'bead' && !beadItem) {
+          beadItem = db.beads.find(x => x.id === b.itemId);
+        }
+        if (b.type === 'mani' && !maniItem) {
+          maniItem = db.mani.find(x => x.id === b.itemId);
+        }
+      });
+      
+      if (pattern.includeCaps && pattern.selectedCapId) {
+        capItem = db.caps.find(c => c.id === pattern.selectedCapId);
+      }
+      
+      let beadsUsed = 0, maniUsed = 0;
+      const maxItems = Math.max(beadCount, maniCount);
+      
+      for (let i = 0; i < maxItems; i++) {
+        if (beadsUsed < beadCount) {
+          items.push({ type: 'bead', data: beadItem, cap: capItem });
+          beadsUsed++;
+        }
+        if (maniUsed < maniCount) {
+          items.push({ type: 'mani', data: maniItem });
+          maniUsed++;
+        }
+      }
+      
+      // Limit for display
+      const maxDisplay = 60;
+      const displayItems = items.slice(0, maxDisplay);
+      const totalItems = displayItems.length + (pattern.includeKadi ? 1 : 0);
+      
+      let svg = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" class="circular-svg">`;
+      
+      // Background circle
+      svg += `<circle cx="${centerX}" cy="${centerY}" r="${radius + 25}" fill="#fafafa" stroke="#e5e7eb" stroke-width="1"/>`;
+      
+      // Thread circle
+      svg += `<circle cx="${centerX}" cy="${centerY}" r="${radius}" fill="none" stroke="#d4d4d4" stroke-width="2"/>`;
+      
+      // Kadi at top
+      if (pattern.includeKadi) {
+        const kadiY = centerY - radius;
+        svg += `
+          <circle cx="${centerX}" cy="${kadiY}" r="12" fill="url(#goldGradient)" stroke="#8B6914" stroke-width="1.5"/>
+          <text x="${centerX}" y="${kadiY + 4}" text-anchor="middle" font-size="10" fill="#8B6914">◉</text>
+        `;
+      }
+      
+      // Gold gradient definition
+      svg += `
+        <defs>
+          <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#FFD700"/>
+            <stop offset="100%" style="stop-color:#B8860B"/>
+          </linearGradient>
+        </defs>
+      `;
+      
+      // Calculate starting angle (offset if kadi is present)
+      const startAngle = pattern.includeKadi ? -Math.PI / 2 + 0.15 : -Math.PI / 2;
+      const angleRange = pattern.includeKadi ? Math.PI * 2 - 0.3 : Math.PI * 2;
+      
+      // Place items around circle
+      displayItems.forEach((item, idx) => {
+        const angle = startAngle + (idx / displayItems.length) * angleRange;
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
+        
+        if (item.type === 'bead') {
+          const beadSize = Math.min(10, Math.max(5, (item.data?.diameter || 6) * 0.8));
+          const beadColor = item.data?.color || '#8B4513';
+          
+          svg += `<circle cx="${x}" cy="${y}" r="${beadSize}" fill="${beadColor}" stroke="rgba(0,0,0,0.2)" stroke-width="0.5"/>`;
+          
+          // Add cap indicator
+          if (item.cap) {
+            const capColor = item.cap.color || '#DAA520';
+            svg += `<circle cx="${x}" cy="${y}" r="${beadSize + 2}" fill="none" stroke="${capColor}" stroke-width="2.5" stroke-dasharray="5 5"/>`;
+          }
+        } else if (item.type === 'mani') {
+          const maniSize = Math.min(8, Math.max(4, (item.data?.ballGauge || 4) * 0.8));
+          const maniColor = item.data?.color || '#FFD700';
+          
+          svg += `<circle cx="${x}" cy="${y}" r="${maniSize}" fill="${maniColor}" stroke="#B8860B" stroke-width="1"/>`;
+        }
+      });
+      
+      // Center text
+      svg += `
+        <text x="${centerX}" y="${centerY - 5}" text-anchor="middle" font-size="18" font-weight="bold" fill="#374151">${beadCount + maniCount}</text>
+        <text x="${centerX}" y="${centerY + 12}" text-anchor="middle" font-size="11" fill="#6b7280">pieces</text>
+      `;
+      
+      svg += '</svg>';
+      
+      container.innerHTML = `<div class="circular-preview">${svg}</div>`;
+    }
+    
+    // ============================================
+    // SAVED PATTERNS
+    // ============================================
+    
+    function openSavePatternModal() {
+      document.getElementById('save-pattern-modal').classList.add('show');
+      document.getElementById('pattern-name').value = '';
+      document.getElementById('pattern-notes').value = '';
+      document.getElementById('pattern-name').focus();
+    }
+    
+    function closeSavePatternModal() {
+      document.getElementById('save-pattern-modal').classList.remove('show');
+    }
+    
+    function savePattern() {
+      const name = document.getElementById('pattern-name').value.trim();
+      
+      if (!name) {
+        showNotification('Please enter a pattern name', 'error');
+        return;
+      }
+      
+      // Calculate summary
+      let beadCount = 0, maniCount = 0;
+      pattern.bucket.forEach(b => {
+        if (b.type === 'bead') beadCount += b.qty;
+        if (b.type === 'mani') maniCount += b.qty;
+      });
+      
+      const savedPattern = {
+        id: generateId(),
+        name: name,
+        date: new Date().toLocaleDateString(),
+        notes: document.getElementById('pattern-notes').value,
+        summary: `${beadCount} beads + ${maniCount} mani` + (pattern.includeCaps ? ' + caps' : ''),
+        data: JSON.parse(JSON.stringify(pattern))
+      };
+      
+      db.savedPatterns.push(savedPattern);
+      saveToStorage();
+      renderSavedPatterns();
+      updateStats();
+      closeSavePatternModal();
+      showNotification('Pattern saved successfully', 'success');
+    }
+    
+    function loadPattern(id) {
+      const saved = db.savedPatterns.find(p => p.id === id);
+      
+      if (!saved) return;
+      
+      pattern = JSON.parse(JSON.stringify(saved.data));
+      
+      // Restore UI state
+      if (pattern.includeCaps) {
+        document.getElementById('toggle-caps').classList.add('active');
+        document.getElementById('caps-options').style.display = 'block';
+      } else {
+        document.getElementById('toggle-caps').classList.remove('active');
+        document.getElementById('caps-options').style.display = 'none';
+      }
+      
+      if (pattern.includeKadi) {
+        document.getElementById('toggle-kadi').classList.add('active');
+        document.getElementById('kadi-options').style.display = 'block';
+      } else {
+        document.getElementById('toggle-kadi').classList.remove('active');
+        document.getElementById('kadi-options').style.display = 'none';
+      }
+      
+      // Restore values
+      document.getElementById('thread-thickness').value = pattern.gapSettings.threadThickness;
+      document.getElementById('uniform-gap').value = pattern.gapSettings.uniformGap;
+      document.getElementById('cap-bead-gap').value = pattern.gapSettings.capBeadGap;
+      document.getElementById('cap-overlap').value = pattern.gapSettings.capOverlap;
+      document.getElementById('measured-set-length').value = pattern.gapSettings.measuredSetLength;
+      document.getElementById('thread-weight').value = pattern.gapSettings.threadWeight;
+      document.getElementById('kadi-size').value = pattern.kadiSize;
+      document.getElementById('kadi-weight').value = pattern.kadiWeight;
+      document.getElementById('select-cap').value = pattern.selectedCapId || '';
+      
+      if (pattern.gapSettings.setLengthMethod === 'measured') {
+        selectMethod('measured');
+      } else {
+        selectMethod('components');
+      }
+      
+      saveToStorage();
+      renderBucket();
+      updateCalculation();
+      
+      // Switch to pattern tab
+      showTab('pattern');
+      document.querySelectorAll('.tab')[1].classList.add('active');
+      document.querySelectorAll('.tab')[3].classList.remove('active');
+      
+      showNotification('Pattern loaded', 'success');
+    }
+    
+    function deletePattern(id) {
+      if (!confirm('Are you sure you want to delete this pattern?')) return;
+      
+      db.savedPatterns = db.savedPatterns.filter(p => p.id !== id);
+      saveToStorage();
+      renderSavedPatterns();
+      updateStats();
+      showNotification('Pattern deleted', 'success');
+    }
+    
+    // ============================================
+    // IMPORT / EXPORT
+    // ============================================
+    
+    function exportDatabase() {
+      const exportData = {
+        version: '1.0',
+        exportDate: new Date().toISOString(),
+        data: db,
+        currentPattern: pattern
+      };
+      
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'mala-database-' + new Date().toISOString().split('T')[0] + '.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      showNotification('Database exported successfully', 'success');
+    }
+    
+    function importDatabase() {
+      document.getElementById('import-file').click();
+    }
+    
+    function handleImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          
+          if (imported.data) {
+            db = { ...db, ...imported.data };
+          }
+          
+          if (imported.currentPattern) {
+            pattern = { ...pattern, ...imported.currentPattern };
+          }
+          
+          saveToStorage();
+          renderAllLists();
+          populateDropdowns();
+          updateStats();
+          renderBucket();
+          updateCalculation();
+          
+          showNotification('Database imported successfully', 'success');
+        } catch (err) {
+          showNotification('Error importing file: ' + err.message, 'error');
+        }
+      };
+      reader.readAsText(file);
+      
+      // Reset input
+      event.target.value = '';
+    }
+    
+    // ============================================
+    // NOTIFICATIONS
+    // ============================================
+    
+    function showNotification(message, type = 'info') {
+      const notification = document.createElement('div');
+      notification.className = 'notification ' + type;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+    
+    // ============================================
+    // INITIALIZE
+    // ============================================
+    
+    init();
+  </script>
+</body>
+</html>
